@@ -34,9 +34,9 @@ var source = (() => {
   ));
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // ../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/node_modules/base64-js/index.js
+  // node_modules/base64-js/index.js
   var require_base64_js = __commonJS({
-    "../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/node_modules/base64-js/index.js"(exports) {
+    "node_modules/base64-js/index.js"(exports) {
       "use strict";
       init_buffer();
       exports.byteLength = byteLength;
@@ -137,9 +137,9 @@ var source = (() => {
     }
   });
 
-  // ../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/node_modules/ieee754/index.js
+  // node_modules/ieee754/index.js
   var require_ieee754 = __commonJS({
-    "../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/node_modules/ieee754/index.js"(exports) {
+    "node_modules/ieee754/index.js"(exports) {
       init_buffer();
       exports.read = function(buffer, offset, isLE, mLen, nBytes) {
         var e, m;
@@ -221,9 +221,9 @@ var source = (() => {
     }
   });
 
-  // ../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/node_modules/buffer/index.js
+  // node_modules/buffer/index.js
   var require_buffer = __commonJS({
-    "../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/node_modules/buffer/index.js"(exports) {
+    "node_modules/buffer/index.js"(exports) {
       "use strict";
       init_buffer();
       var base64 = require_base64_js();
@@ -1917,10 +1917,10 @@ var source = (() => {
     }
   });
 
-  // ../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/dist/shims/buffer.js
+  // node_modules/@paperback/toolchain/dist/shims/buffer.js
   var Buffer2;
   var init_buffer = __esm({
-    "../../../AppData/Roaming/npm/node_modules/@paperback/toolchain/dist/shims/buffer.js"() {
+    "node_modules/@paperback/toolchain/dist/shims/buffer.js"() {
       Buffer2 = require_buffer().Buffer;
     }
   });
@@ -16807,7 +16807,7 @@ var source = (() => {
   init_buffer();
   async function setFilters(data2) {
     for (const genre of data2.genres) {
-      Application.setState(genre.name.toUpperCase(), genre.id.toString());
+      Application.setState(genre.id.toString(), genre.name.toUpperCase());
     }
   }
   async function getFilter(filter4) {
@@ -16961,7 +16961,6 @@ var source = (() => {
       if (!slug)
         continue;
       const id = await getMangaId(slug);
-      console.log(manga);
       const image = $2("img", manga).first().attr("src") ?? "";
       const title = $2(".col-span-9 > .font-medium > a", manga).first().text().trim() ?? "";
       const subtitle = $2(".flex.flex-col .flex-row a", manga).first().text().trim() ?? "";
@@ -17066,7 +17065,6 @@ var source = (() => {
   // src/Asura/AsuraHelper.ts
   init_buffer();
   function getFilterTagsBySection(section, tags) {
-    console.log("Its getting here");
     return tags?.filter((x) => x.startsWith(`${section}:`)).map((x) => {
       return x.replace(`${section}:`, "");
     });
@@ -17204,7 +17202,6 @@ var source = (() => {
         {
           id: "featured",
           title: "Featured",
-          subtitle: "Cringe",
           type: import_types5.DiscoverSectionType.featured
         },
         {
@@ -17231,11 +17228,6 @@ var source = (() => {
         {
           id: "status",
           title: "Status",
-          type: import_types5.DiscoverSectionType.genres
-        },
-        {
-          id: "order",
-          title: "Order",
           type: import_types5.DiscoverSectionType.genres
         }
       ];
@@ -17271,7 +17263,6 @@ var source = (() => {
           if (section.id === "type") {
             items = [];
             const tags = await this.getSearchTags();
-            console.log(tags[2].tags.length);
             for (let tag of tags[2].tags) {
               items.push({
                 type: "genresCarouselItem",
@@ -17292,7 +17283,6 @@ var source = (() => {
           if (section.id === "genres") {
             items = [];
             const tags = await this.getSearchTags();
-            console.log(tags[0].tags.length);
             for (let tag of tags[0].tags) {
               items.push({
                 type: "genresCarouselItem",
@@ -17313,29 +17303,7 @@ var source = (() => {
           if (section.id === "status") {
             items = [];
             const tags = await this.getSearchTags();
-            console.log(tags[1].tags.length);
             for (let tag of tags[1].tags) {
-              items.push({
-                type: "genresCarouselItem",
-                searchQuery: {
-                  title: tag.title,
-                  filters: [{
-                    id: tag.id,
-                    value: {
-                      [tag.id]: "included"
-                    }
-                  }]
-                },
-                name: tag.title,
-                metadata
-              });
-            }
-          }
-          if (section.id === "order") {
-            items = [];
-            const tags = await this.getSearchTags();
-            console.log(tags[3].tags.length);
-            for (let tag of tags[3].tags) {
               items.push({
                 type: "genresCarouselItem",
                 searchQuery: {
@@ -17424,7 +17392,6 @@ var source = (() => {
     }
     async getSearchResults(query, metadata) {
       const page = metadata?.page ?? 1;
-      console.log("searching");
       let urlBuilder = new URLBuilder(AS_DOMAIN).addPathComponent("series").addQueryParameter("page", page.toString());
       if (query?.title) {
         urlBuilder = urlBuilder.addQueryParameter("name", encodeURIComponent(query?.title.replace(/[’‘´`'-][a-z]*/g, "%") ?? ""));
@@ -17432,21 +17399,13 @@ var source = (() => {
       const includedTags = [];
       const excludedTags = [];
       for (const filter4 of query.filters) {
-        console.log("In for: " + JSON.stringify(filter4));
         const tags = filter4.value ?? {};
         for (const tag of Object.entries(tags)) {
-          console.log(`	 ${tag}`);
           includedTags.push(tag[0]);
         }
       }
-      console.log("Included: " + includedTags);
-      let genres = getFilterTagsBySection("genres", includedTags);
-      let types = getFilterTagsBySection("type", includedTags);
-      console.log("Genres: " + genres);
-      console.log("Types: " + types);
-      urlBuilder = urlBuilder.addQueryParameter("genres", genres).addQueryParameter("status", getFilterTagsBySection("status", includedTags)).addQueryParameter("types", types).addQueryParameter("order", getFilterTagsBySection("order", includedTags));
+      urlBuilder = urlBuilder.addQueryParameter("genres", getFilterTagsBySection("genres", includedTags)).addQueryParameter("status", getFilterTagsBySection("status", includedTags)).addQueryParameter("types", getFilterTagsBySection("type", includedTags)).addQueryParameter("order", getFilterTagsBySection("order", includedTags));
       let url = urlBuilder.buildUrl();
-      console.log(url);
       const response = await Application.scheduleRequest({
         url,
         method: "GET"
