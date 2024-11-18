@@ -16884,7 +16884,7 @@ var source = (() => {
         artist: (0, import_html_entities.decode)(artist),
         tagGroups: tagSections,
         synopsis: (0, import_html_entities.decode)(description),
-        thumbnailUrl: "image",
+        thumbnailUrl: image,
         contentRating: import_types2.ContentRating.EVERYONE
       }
     };
