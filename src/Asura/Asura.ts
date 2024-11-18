@@ -117,12 +117,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
             id: 'status',
             title: 'Status',
             type: DiscoverSectionType.genres
-        },
-        {
-
-            id: 'order',
-            title: 'Order',
-            type: DiscoverSectionType.genres
         }]
     }
     async getDiscoverSectionItems(section: DiscoverSection, metadata: unknown | undefined): Promise<PagedResults<DiscoverSectionItem>> {
@@ -196,25 +190,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
                     items = []
                     const tags: TagSection[] = await this.getSearchTags();
                     for(let tag of tags[1].tags) {
-                        items.push({
-                            type: "genresCarouselItem",
-                            searchQuery: {
-                                title: tag.title,
-                                filters: [{
-                                    id: tag.id, value: {
-                                        [tag.id]: "included"
-                                    },
-                                }],
-                            },
-                            name: tag.title,
-                            metadata: metadata,
-                        })
-                    }
-                }
-                if(section.id === 'order') {
-                    items = []
-                    const tags: TagSection[] = await this.getSearchTags();
-                    for(let tag of tags[3].tags) {
                         items.push({
                             type: "genresCarouselItem",
                             searchQuery: {
