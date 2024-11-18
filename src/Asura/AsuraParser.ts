@@ -78,7 +78,7 @@ export const parseMangaDetails = async ($: CheerioAPI, mangaId: string): Promise
             artist: decodeHTMLEntity(artist),
             tagGroups: tagSections,
             synopsis: decodeHTMLEntity(description),
-            thumbnailUrl: 'image',
+            thumbnailUrl: image,
             contentRating: ContentRating.EVERYONE
         }
     }
