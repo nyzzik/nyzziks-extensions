@@ -233,49 +233,6 @@ export const parsePopularSection = async ($: CheerioAPI): Promise<DiscoverSectio
     return popularSection_Array
 }
 
-export const parseViewMore = async ($: CheerioAPI, type: DiscoverSectionType): Promise<DiscoverSectionItem[]> => {
-    const manga: DiscoverSectionItem[] = []
-    const collectedIds: string[] = []
-
-    for(const item of $('a', 'div.grid.grid-cols-2').toArray()) {
-        const slug = $(item).attr('href')?.replace(/\/$/, '')?.split('/').pop() ?? ''
-        if(!slug) continue
-
-        const id = await getMangaId(slug)
-
-        const image: string = $('img', item).first().attr('src') ?? ''
-        const title: string = $('span.block.font-bold', item).first().text().trim() ?? ''
-        const subtitle: string = $('span.block.font-bold', item).first().next().text().trim() ?? ''
-        let s: "featuredCarouselItem" | "chapterUpdatesCarouselItem" | "simpleCarouselItem" | "prominentCarouselItem"
-        switch(type) {
-            case DiscoverSectionType.featured:
-                s = "featuredCarouselItem";
-                break
-            case DiscoverSectionType.chapterUpdates:
-                s = "chapterUpdatesCarouselItem"
-                break
-            case DiscoverSectionType.simpleCarousel:
-                s = "simpleCarouselItem"
-                break
-            case DiscoverSectionType.prominentCarousel:
-                s = "prominentCarouselItem"
-            case DiscoverSectionType.genres:
-                s = "featuredCarouselItem"
-                break
-        }
-        if(!id || !title || collectedIds.includes(id)) continue
-        manga.push({
-            imageUrl: image,
-            title: decodeHTMLEntity(title),
-            mangaId: id,
-            chapterId: decodeHTMLEntity(subtitle),
-            type: s
-        })
-        collectedIds.push(id)
-
-    }
-    return manga
-}
 
 export const parseTags = (filters: Filters): TagSection[] => {
 
