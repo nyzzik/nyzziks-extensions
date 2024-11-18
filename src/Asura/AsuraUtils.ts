@@ -2,7 +2,7 @@ import { Filters } from './interface/Filters'
 
 export async function setFilters(data: Filters) {
     for(const genre of data.genres) {
-        Application.setState(genre.name.toUpperCase(), genre.id.toString())
+        Application.setState(genre.id.toString(), genre.name.toUpperCase())
     }
 }
 
