@@ -6,12 +6,10 @@ import {
 
 
 export function getIncludedTagBySection(section: string, tags: any[]): any {
-    console.log("in include tag func" + section)
     return (tags?.find((x: string) => x.startsWith(`${section}:`))?.id.replace(`${section}:`, '') ?? '').replace(' ', '+')
 }
 
 export function getFilterTagsBySection(section: string, tags: any[]): string[] {
-    console.log("Its getting here")
     return tags?.filter((x: string) => x.startsWith(`${section}:`)).map((x: string) => {
         return x.replace(`${section}:`, '')
     })

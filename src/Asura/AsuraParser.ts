@@ -190,8 +190,6 @@ export const parseUpdateSection = async ($: CheerioAPI): Promise<DiscoverSection
 
         const id = await getMangaId(slug)
 
-        console.log(manga)
-
         const image: string = $('img', manga).first().attr('src') ?? ''
         const title: string = $('.col-span-9 > .font-medium > a', manga).first().text().trim() ?? ''
         const subtitle: string = $('.flex.flex-col .flex-row a', manga).first().text().trim() ?? ''

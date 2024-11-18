@@ -85,7 +85,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
         return [{
             id: 'featured',
             title: 'Featured',
-            subtitle: "Cringe",
             type: DiscoverSectionType.featured
         },
 
@@ -157,7 +156,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
                 if(section.id === 'type') {
                     items = []
                     const tags: TagSection[] = await this.getSearchTags();
-                    console.log(tags[2].tags.length)
                     for(let tag of tags[2].tags) {
                         items.push({
                             type: "genresCarouselItem",
@@ -178,7 +176,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
 
                     items = []
                     const tags: TagSection[] = await this.getSearchTags();
-                    console.log(tags[0].tags.length)
                     for(let tag of tags[0].tags) {
                         items.push({
                             type: "genresCarouselItem",
@@ -198,7 +195,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
                 if(section.id === 'status') {
                     items = []
                     const tags: TagSection[] = await this.getSearchTags();
-                    console.log(tags[1].tags.length)
                     for(let tag of tags[1].tags) {
                         items.push({
                             type: "genresCarouselItem",
@@ -218,7 +214,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
                 if(section.id === 'order') {
                     items = []
                     const tags: TagSection[] = await this.getSearchTags();
-                    console.log(tags[3].tags.length)
                     for(let tag of tags[3].tags) {
                         items.push({
                             type: "genresCarouselItem",
@@ -351,8 +346,6 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
     async getSearchResults(query: SearchQuery, metadata: any): Promise<PagedResults<SearchResultItem>> {
         const page: number = metadata?.page ?? 1
 
-        console.log("searching")
-
         let urlBuilder: URLBuilder = new URLBuilder(AS_DOMAIN)
             .addPathComponent('series')
             .addQueryParameter('page', page.toString())
@@ -363,33 +356,23 @@ export class AsuraScans implements Extension, SearchResultsProviding, MangaProvi
         const includedTags = [];
         const excludedTags = [];
         for(const filter of query.filters) {
-            console.log("In for: " + JSON.stringify(filter));
-
             const tags = (filter.value ?? {}) as Record<
                 string,
                 "included" | "excluded"
             >;
             for(const tag of Object.entries(tags)) {
-                console.log(`\t ${tag}`)
                 includedTags.push(tag[0]);
             }
 
         }
 
-
-        console.log("Included: " + includedTags)
-        let genres: string[] = getFilterTagsBySection('genres', includedTags)
-        let types: string[] = getFilterTagsBySection('type', includedTags);
-        console.log("Genres: " + genres)
-        console.log("Types: " + types)
         urlBuilder = urlBuilder
-            .addQueryParameter('genres', genres)
+            .addQueryParameter('genres', getFilterTagsBySection('genres', includedTags))
             .addQueryParameter('status', getFilterTagsBySection('status', includedTags))
-            .addQueryParameter('types', types)
+            .addQueryParameter('types', getFilterTagsBySection('type', includedTags))
             .addQueryParameter('order', getFilterTagsBySection('order', includedTags))
 
         let url: string = urlBuilder.buildUrl();
-        console.log(url)
         const response = await Application.scheduleRequest({
             url,
             method: 'GET'
